@@ -111,18 +111,28 @@ describe("Filter", function(){
 				result.push(list[i]);
 		return result;
 	}
+	function negate(criteriaFn){
+		return function(){
+			return !criteriaFn.apply(this, arguments);
+		};
+	}
 	describe('Filter products by category', function(){
+		var isStationaryProduct = function(product){
+			return product.category === 'stationary';
+		};
 		describe('All stationary products [ category = "stationary" ]', function(){
-			var isStationaryProduct = function(product){
-				return product.category === 'stationary';
-			};
+			
 			var stationaryProducts = filter(products, isStationaryProduct)
 			console.table(stationaryProducts);
 		});
 		describe('All non stationary products [ category != "stationary"', function(){
-			var isNotStationaryProduct = function(product){
+			/*var isNotStationaryProduct = function(product){
 				return product.category !== 'stationary';
-			};
+			};*/
+			/*var isNotStationaryProduct = function(product){
+				return !isStationaryProduct(product);
+			};*/
+			var isNotStationaryProduct = negate(isStationaryProduct);
 			var nonStationaryProducts = filter(products, isNotStationaryProduct)
 			console.table(nonStationaryProducts);
 		})
@@ -141,9 +151,10 @@ describe("Filter", function(){
 			/*var isAffordableProduct = function(product){
 				return product.cost <= 50;
 			}*/
-			var isAffordableProduct = function(product){
+			/*var isAffordableProduct = function(product){
 				return !isCostlyProduct(product);
-			}
+			}*/
+			var isAffordableProduct = negate(isCostlyProduct);
 			var affordableProducts = filter(products, isAffordableProduct);
 			console.table(affordableProducts);
 		});
