@@ -103,5 +103,46 @@ describe('Sorting', function(){
 	});
 });
 
+describe("Filter", function(){
+	function filter(list, criteriaFn){
+		var result = [];
+		for(var i=0; i < list.length; i++)
+			if (criteriaFn(list[i]))
+				result.push(list[i]);
+		return result;
+	}
+	describe('All stationary products [ category = "stationary" ]', function(){
+		/*function filterStationaryProducts(){
+			var result = [];
+			for(var i=0; i < products.length; i++)
+				if (products[i].category === 'stationary')
+					result.push(products[i]);
+			return result;
+		}
+		var stationaryProducts = filterStationaryProducts();
+		*/
+		var isStationaryProduct = function(product){
+			return product.category === 'stationary';
+		};
+		var stationaryProducts = filter(products, isStationaryProduct)
+		console.table(stationaryProducts);
+	});
+
+	describe('All costly products [ cost > 50 ]', function(){
+		/*function filterCostlyProducts(){
+			var result = [];
+			for(var i=0; i < products.length; i++)
+				if (products[i].cost > 50)
+					result.push(products[i]);
+			return result;
+		}
+		var costlyProducts = filterCostlyProducts();*/
+		var isCostlyProduct = function(product){
+			return product.cost > 50;
+		}
+		var costlyProducts = filter(products, isCostlyProduct);
+		console.table(costlyProducts);
+	});
+});
 
 
