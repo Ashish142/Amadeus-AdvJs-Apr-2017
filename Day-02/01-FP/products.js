@@ -111,37 +111,42 @@ describe("Filter", function(){
 				result.push(list[i]);
 		return result;
 	}
-	describe('All stationary products [ category = "stationary" ]', function(){
-		/*function filterStationaryProducts(){
-			var result = [];
-			for(var i=0; i < products.length; i++)
-				if (products[i].category === 'stationary')
-					result.push(products[i]);
-			return result;
-		}
-		var stationaryProducts = filterStationaryProducts();
-		*/
-		var isStationaryProduct = function(product){
-			return product.category === 'stationary';
-		};
-		var stationaryProducts = filter(products, isStationaryProduct)
-		console.table(stationaryProducts);
+	describe('Filter products by category', function(){
+		describe('All stationary products [ category = "stationary" ]', function(){
+			var isStationaryProduct = function(product){
+				return product.category === 'stationary';
+			};
+			var stationaryProducts = filter(products, isStationaryProduct)
+			console.table(stationaryProducts);
+		});
+		describe('All non stationary products [ category != "stationary"', function(){
+			var isNotStationaryProduct = function(product){
+				return product.category !== 'stationary';
+			};
+			var nonStationaryProducts = filter(products, isNotStationaryProduct)
+			console.table(nonStationaryProducts);
+		})
 	});
 
-	describe('All costly products [ cost > 50 ]', function(){
-		/*function filterCostlyProducts(){
-			var result = [];
-			for(var i=0; i < products.length; i++)
-				if (products[i].cost > 50)
-					result.push(products[i]);
-			return result;
-		}
-		var costlyProducts = filterCostlyProducts();*/
+	describe("Filter products by cost", function(){
 		var isCostlyProduct = function(product){
 			return product.cost > 50;
 		}
-		var costlyProducts = filter(products, isCostlyProduct);
-		console.table(costlyProducts);
+		describe('All costly products [ cost > 50 ]', function(){
+			
+			var costlyProducts = filter(products, isCostlyProduct);
+			console.table(costlyProducts);
+		});
+		describe('All affordable products [ cost <= 50 ]', function(){
+			/*var isAffordableProduct = function(product){
+				return product.cost <= 50;
+			}*/
+			var isAffordableProduct = function(product){
+				return !isCostlyProduct(product);
+			}
+			var affordableProducts = filter(products, isAffordableProduct);
+			console.table(affordableProducts);
+		});
 	});
 });
 
