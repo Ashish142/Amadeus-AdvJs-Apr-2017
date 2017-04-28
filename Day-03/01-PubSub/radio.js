@@ -4,10 +4,13 @@ var radio = (function(){
 		this._subscriptions = [];
 	}
 	
-	Radio.prototype.subscribe = function (subscription){
-		if (!(typeof subscription === 'function' || Array.isArray(subscription))) return;
-		this._subscriptions = this._subscriptions || [];
-		this._subscriptions.push(subscription);
+	Radio.prototype.subscribe = function (){
+		var self = this;
+		Array.prototype.forEach.call(arguments, function(subscription){
+			if (!(typeof subscription === 'function' || Array.isArray(subscription))) return;
+			self._subscriptions = self._subscriptions || [];
+			self._subscriptions.push(subscription);
+		});
 		return this;
 	}
 
@@ -25,9 +28,13 @@ var radio = (function(){
 		return this;
 	}
 
-	Radio.prototype.unsubscribe = function (subscription){
-		this._subscriptions = this._subscriptions.filter(function(subscriptionFn){
-			return subscriptionFn !== subscription;
+	Radio.prototype.unsubscribe = function (){
+		var self = this;
+		Array.prototype.forEach.call(arguments, function(subscription){
+			self._subscriptions = self._subscriptions.filter(function(sc){
+				subscriptionFn = Array.isArray(sc) ? sc[0] : sc;
+				return subscriptionFn !== subscription;
+			});
 		});
 		return this;
 	}
